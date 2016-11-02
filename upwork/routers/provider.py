@@ -19,7 +19,7 @@ class Provider(Namespace):
 
         """
         if isinstance(provider_ciphertext, (list, tuple)):
-            provider_ciphertext = map(str, provider_ciphertext)
+            provider_ciphertext = list(map(str, provider_ciphertext))
             provider_ciphertext = ';'.join(provider_ciphertext[:20])
 
         url = 'providers/{0}'.format(provider_ciphertext)
@@ -36,7 +36,7 @@ class Provider(Namespace):
 
         """
         if isinstance(provider_ciphertext, (list, tuple)):
-            provider_ciphertext = map(str, provider_ciphertext)
+            provider_ciphertext = list(map(str, provider_ciphertext))
             provider_ciphertext = ';'.join(provider_ciphertext[:20])
 
         url = 'providers/{0}/brief'.format(provider_ciphertext)

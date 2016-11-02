@@ -1,7 +1,7 @@
 # Python bindings to Upwork API
 # python-upwork version 0.5
 # (C) 2010-2015 Upwork
-import urlparse
+import urllib.parse
 from .config import BASE_URL
 
 __all__ = ['Namespace', 'GdsNamespace']
@@ -15,7 +15,7 @@ class Namespace(object):
 
     """
 
-    base_url = urlparse.urljoin(BASE_URL, 'api/')
+    base_url = urllib.parse.urljoin(BASE_URL, 'api/')
     api_url = None
     version = 1
 
@@ -45,7 +45,7 @@ class Namespace(object):
 
 class GdsNamespace(Namespace):
     """Gds API only allows GET requests."""
-    base_url = urlparse.urljoin(BASE_URL, 'gds/')
+    base_url = urllib.parse.urljoin(BASE_URL, 'gds/')
 
     def post(self, url, data=None):
         return None

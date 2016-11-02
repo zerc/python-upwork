@@ -3,8 +3,10 @@
 # (C) 2010-2015 Upwork
 
 import time
-import urlparse
-import urllib
+import urllib.parse
+import urllib.request
+import urllib.parse
+import urllib.error
 import oauth2 as oauth
 import logging
 
@@ -26,10 +28,10 @@ class OAuth(Namespace):
     api_url = 'auth/'
     version = 1
 
-    request_token_url = urlparse.urljoin(
+    request_token_url = urllib.parse.urljoin(
         BASE_URL, 'api/auth/v1/oauth/token/request')
-    authorize_url = urlparse.urljoin(BASE_URL, 'services/api/auth')
-    access_token_url = urlparse.urljoin(BASE_URL, 'api/auth/v1/oauth/token/access')
+    authorize_url = urllib.parse.urljoin(BASE_URL, 'services/api/auth')
+    access_token_url = urllib.parse.urljoin(BASE_URL, 'api/auth/v1/oauth/token/access')
 
     def get_oauth_params(self, url, key, secret, data=None, method='GET',
                          to_header=False, to_dict=False):
@@ -90,9 +92,9 @@ class OAuth(Namespace):
         if response.get('status') != '200':
             raise Exception(
                 "Invalid request token response: {0}.".format(content))
-        request_token = dict(urlparse.parse_qsl(content))
-        self.request_token = request_token.get('oauth_token')
-        self.request_token_secret = request_token.get('oauth_token_secret')
+        request_token = dict(urllib.parse.parse_qsl(content))
+        self.request_token = request_token.get(b'oauth_token')
+        self.request_token_secret = request_token.get(b'oauth_token_secret')
         return self.request_token, self.request_token_secret
 
     def get_authorize_url(self, callback_url=None):
@@ -102,10 +104,10 @@ class OAuth(Namespace):
         oauth_token = getattr(self, 'request_token', None) or\
             self.get_request_token()[0]
         if callback_url:
-            params = urllib.urlencode({'oauth_token': oauth_token,\
-                'oauth_callback': callback_url})
+            params = urllib.parse.urlencode({'oauth_token': oauth_token,
+                                             'oauth_callback': callback_url})
         else:
-            params = urllib.urlencode({'oauth_token': oauth_token})
+            params = urllib.parse.urlencode({'oauth_token': oauth_token})
         return '{0}?{1}'.format(self.authorize_url, params)
 
     def get_access_token(self, verifier):
@@ -115,7 +117,7 @@ class OAuth(Namespace):
         try:
             request_token = self.request_token
             request_token_secret = self.request_token_secret
-        except AttributeError, e:
+        except AttributeError as e:
             logger = logging.getLogger('python-upwork')
             logger.debug(e)
             raise Exception("At first you need to call get_authorize_url")
@@ -126,9 +128,9 @@ class OAuth(Namespace):
         if response.get('status') != '200':
             raise Exception(
                 "Invalid access token response: {0}.".format(content))
-        access_token = dict(urlparse.parse_qsl(content))
-        self.access_token = access_token.get('oauth_token')
-        self.access_token_secret = access_token.get('oauth_token_secret')
+        access_token = dict(urllib.parse.parse_qsl(content))
+        self.access_token = access_token.get(b'oauth_token')
+        self.access_token_secret = access_token.get(b'oauth_token_secret')
         return self.access_token, self.access_token_secret
 
     def get_info(self):

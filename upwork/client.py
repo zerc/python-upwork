@@ -23,8 +23,8 @@ logger = logging.getLogger('python-upwork')
 
 if os.environ.get("PYTHON_UPWORK_DEBUG", False):
     if os.environ.get("PYTHON_UPWORK_DEBUG_FILE", False):
-        fh = logging.FileHandler(filename=os.environ["PYTHON_UPWORK_DEBUG_FILE"]
-            )
+        fh = logging.FileHandler(
+            filename=os.environ["PYTHON_UPWORK_DEBUG_FILE"])
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
     else:
@@ -124,7 +124,7 @@ class Client(object):
         self.oauth_access_token = oauth_access_token
         self.oauth_access_token_secret = oauth_access_token_secret
 
-        #Namespaces
+        # Namespaces
         self.auth = OAuth(self)
 
         if finreport:
@@ -168,7 +168,7 @@ class Client(object):
             from upwork.routers.job import Job
             self.job = Job(self)
 
-    #Shortcuts for HTTP methods
+    # Shortcuts for HTTP methods
     def get(self, url, data=None):
         return self.read(url, data, method='GET', fmt=self.fmt)
 
@@ -289,7 +289,7 @@ class Client(object):
             logger.debug('Error: {0}'.format(response))
             raise_http_error(url, response)
 
-        result = response.data
+        result = response.data.decode('utf-8')
         logger.debug('Response: {0}'.format(result))
 
         if fmt == 'json':

@@ -1012,7 +1012,7 @@ class HR(Namespace):
         data['would_hire_again'] = would_hire_again
 
         if fb_scores:
-            for key, value in fb_scores.items():
+            for key, value in list(fb_scores.items()):
                 data[key] = value
 
         if fb_comment:

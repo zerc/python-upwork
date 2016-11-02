@@ -154,7 +154,7 @@ class Offers(Namespace):
             data['charge_upfront_percent'] = charge_upfront_percent
 
         if context:
-            for k, v in context.iteritems():
+            for k, v in context.items():
                 key = 'context[{0}]'.format(k)
                 data[key] = v
 
@@ -178,7 +178,7 @@ class Offers(Namespace):
 
         if milestones:
             for idx, val in enumerate(milestones):
-                for k, v in val.iteritems():
+                for k, v in val.items():
                     key = 'milestones[{0}][{1}]'.format(idx, k)
                     data[key] = v
 
